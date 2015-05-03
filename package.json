@@ -1,0 +1,24 @@
+{
+  "name": "grunt-compare-coverage",
+  "version": "1.0.0",
+  "description": "compare coverage output files",
+  "files": [
+    "tasks"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Malkiz/grunt-compare-coverage.git"
+  },
+  "author": "omri eyal",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/Malkiz/grunt-compare-coverage/issues"
+  },
+  "homepage": "https://github.com/Malkiz/grunt-compare-coverage",
+  "dependencies": {
+    "jsondiffpatch": "^0.1.31"
+  }
+}
