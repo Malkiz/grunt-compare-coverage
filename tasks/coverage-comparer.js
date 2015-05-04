@@ -1,11 +1,15 @@
 module.exports = function(grunt) {
 	var fs = require('fs');
-	var path = require('path');
 	var jsondiffpatch = require('jsondiffpatch').create({});
+	var reporter = new require('../lib/reporters/multi.js').Reporter;
+	var emitter = require('../lib/eventbus.js').emitter;
 
 	grunt.registerMultiTask('coverage-comparer', 'compare coverage results', function(){
 		var _this = this;
 		var options = _this.options();
+
+		reporter.init(options.reporters);
+		emitter.emit('init', options, grunt);
 
 		var baseFilePaths = grunt.file.expand(options.base);
 		var comparedFilePaths = grunt.file.expand(options.compared);
@@ -18,29 +22,27 @@ module.exports = function(grunt) {
 		var filesArr = Object.keys(delta);
 		filesArr = replace(options, filesArr);
 
+		emitter.emit('allFiles', filesArr);
+
 		if (options.exclude) {
 			var exclude = getDataFromFile(options.exclude);
+			emitter.emit('exclude', exclude);
 			filesArr = filesArr.filter(function (item) {
 				return !inArray(item, exclude);
 			});
+			emitter.emit('filesAfterExclude', filesArr);
 		}
 
 		if (options.include) {
 			var include = getDataFromFile(options.include);
+			emitter.emit('include', include);
 			filesArr = filesArr.filter(function (item) {
 				return inArray(item, include);
 			});
+			emitter.emit('filesAfterInclude', filesArr);
 		}
 
-		try {
-			var dir = path.dirname(options.outputFile);
-			if (!fs.existsSync(dir)){
-				fs.mkdirSync(dir);
-			}
-			fs.writeFileSync(options.outputFile, JSON.stringify(filesArr));
-		} catch(err) {
-			console.log('Cannot write ' + options.outputFile + '\n\t' + err.message);
-		}
+		emitter.emit('filesFinal', filesArr);
 	});
 
 	var types = {
