@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "compare coverage output files",
   "files": [
+    "lib",
     "tasks"
   ],
   "scripts": {
@@ -19,6 +20,8 @@
   },
   "homepage": "https://github.com/Malkiz/grunt-compare-coverage",
   "dependencies": {
-    "jsondiffpatch": "^0.1.31"
+    "jsondiffpatch": "^0.1.31",
+    "junit-xml-parser": "git://github.com/Malkiz/junit-xml-parser",
+    "xmlbuilder": "^2.6.2"
   }
 }
